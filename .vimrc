@@ -37,7 +37,7 @@ set foldmethod=indent                    " fold based on indentation
 set foldlevelstart=10                    " open most folds by default
 set foldnestmax=10                       " 10 nested fold max
 " space open/closes folds
-nnoremap <space> za 
+nnoremap <tab> za 
 " }}}
 " Movement and Text {{{
 
@@ -53,6 +53,8 @@ nnoremap E $
 nnoremap gV `[v`]
 " }}}
 " Leader Shortcuts {{{
+" space is leader
+let mapleader=" "
 
 " jk is escape
 inoremap jk <esc>
@@ -82,7 +84,8 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
 " automatically open nerdtree on vim open
-autocmd vimenter * NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " close vim if the only window left is nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -168,6 +171,6 @@ function! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     let @/=_s
     call cursor(l, c)
-endfunction
+endfunc
 " }}}
 " vim:foldmethod=marker:foldlevel=0
